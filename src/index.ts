@@ -25,7 +25,9 @@ const getAllEssence = async (qNumber: number) =>{
   }
   while(!res.data.is_end){
     res = await api.getEssence(qNumber,++pageNum);
-    essenceData.push(...res.data.msg_list)
+    if(res.data.msg_list){
+      essenceData.push(...res.data.msg_list)
+    }
   }
   return essenceData
 }
@@ -38,7 +40,6 @@ client.on("system.online", async function () {
   const bkn = client.bkn;
   api.setApiConfig(cookie,bkn);
 
-  
 })
 
 

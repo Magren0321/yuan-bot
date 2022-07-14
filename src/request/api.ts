@@ -11,7 +11,7 @@ const api  = {
   },
 
   getEssence: async function(qNumber: number,startPage: number){
-    const url = `https://qun.qq.com/cgi-bin/group_digest/digest_list?bkn=${bkn}&bkn=${bkn}&group_code=${qNumber}&page_start=${startPage}&page_limit=50`
+    const url = `https://qun.qq.com/cgi-bin/group_digest/digest_list?bkn=${bkn}&group_code=${qNumber}&page_start=${startPage}&page_limit=50`
     const response = axios({
       url: url,
       headers:{
