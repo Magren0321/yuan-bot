@@ -1,7 +1,10 @@
 import { createClient } from "oicq";
 import api from './request/api'
-import {GroupResponse} from "./types/responses";
+import { GroupResponse } from "./types/responses";
+import { startDB } from './db'
+import { Essence } from './db/schemas/essence'
 
+startDB()
 
 const account = 0;
 const password = "";
@@ -40,6 +43,8 @@ client.on("system.online", async function () {
   const bkn = client.bkn;
   api.setApiConfig(cookie,bkn);
 
+  const essenceData = await getAllEssence(319690758);
+  Essence.create(essenceData);
 })
 
 
