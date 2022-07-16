@@ -23,7 +23,7 @@ const login = async (password: string) => {
 }
 
 // 获取所有的精华消息
-const getAllEssence = async () => {
+const getAllEssence = async (): Promise<GroupResponse.EssenceDetail[]> => {
   const essenceData:GroupResponse.EssenceDetail[] = []
   let pageNum = 0
   let res = await api.getEssence(qNumber, pageNum)
@@ -47,26 +47,26 @@ const getNewEssence = async () => {
 
   if (res.data.msg_list) {
     let data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
-      return item.sender_time > timeStamp
+      return item.add_digest_time > timeStamp
     })
-    newData.push(...data)
+    newData.unshift(...data)
     // 过滤后依然是50条，有精华消息不止50条的可能
     while (!res.data.is_end && data.length === 50) {
       res = await api.getEssence(qNumber, ++pageNum)
       data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
-        return item.sender_time > timeStamp
+        return item.add_digest_time > timeStamp
       })
-      newData.push(...data)
+      newData.unshift(...data)
     }
   }
 
   if (newData.length !== 0) {
     // 更新时间戳
-    timeStamp = newData[0].sender_time
+    timeStamp = newData[0].add_digest_time
     // 存入数据库
     Essence.create(newData)
     // 存入本地数组
-    essenceData.push(...newData)
+    essenceData = [...newData, ...essenceData]
     console.log(`有${newData.length}条新的精华消息！`)
   }
 }
@@ -82,12 +82,19 @@ client.on('system.online', async function () {
   essenceData = await Essence.find()
 
   if (essenceData.length === 0) {
+    console.log('数据库无数据，进行请求')
     essenceData = await getAllEssence()
     Essence.create(essenceData)
   }
 
-  timeStamp = essenceData[0].sender_time
-  console.log(`一共有${essenceData.length}条精华消息！`)
+  timeStamp = essenceData[0].add_digest_time
 
-  setInterval(getNewEssence, 30000)
+  console.log(`一共有${essenceData.length}条精华消息！`)
+  setInterval(getNewEssence, 10000)
+})
+
+// 监听信息
+client.on('message', async e => {
+  console.log(e)
+  // e.reply('test', true)
 })
