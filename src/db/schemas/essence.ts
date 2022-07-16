@@ -13,7 +13,7 @@ export const EssenceSchema = new mongoose.Schema({
   add_digest_time: Number,
   msg_content: [
     {
-      msg_type: Number, 
+      msg_type: Number,
       text: String,
       image_url: String,
       image_thumbnail_url: String

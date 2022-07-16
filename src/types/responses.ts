@@ -1,7 +1,7 @@
 export namespace GroupResponse {
-  
+
   export interface MsgContent{
-    msg_type: number, 
+    msg_type: number,
     text?: string,
     image_url?: string,
     image_thumbnail_url?: string
@@ -19,7 +19,7 @@ export namespace GroupResponse {
     add_digest_time: number,
     msg_content: MsgContent[]
   }
-  
+
   export interface EssenceResponse{
     retcode: number,
     retmsg: string,

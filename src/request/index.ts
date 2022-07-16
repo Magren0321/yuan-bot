@@ -44,7 +44,7 @@ const showStatus = (status: number) => {
 
 const service = axios.create({
   withCredentials: false,
-  timeout: 30000, //超时时间
+  timeout: 30000, // 超时时间
   transformRequest: [(data) => {
     data = JSON.stringify(data)
     return data
@@ -63,31 +63,31 @@ const service = axios.create({
 
 // 请求拦截器
 service.interceptors.request.use((config) => {
-    return config
+  return config
 }, (error) => {
-    // 错误抛到业务代码
-    error.data = {}
-    error.data.msg = '服务器异常'
-    return Promise.resolve(error)
+  // 错误抛到业务代码
+  error.data = {}
+  error.data.msg = '服务器异常'
+  return Promise.resolve(error)
 })
 
 // 响应拦截器
 service.interceptors.response.use((response) => {
-    const status = response.status
-    let msg = ''
-    if (status < 200 || status >= 300) {
-        msg = showStatus(status)
-        if (typeof response.data === 'string') {
-            response.data = {msg}
-        } else {
-            response.data.msg = msg
-        }
+  const status = response.status
+  let msg = ''
+  if (status < 200 || status >= 300) {
+    msg = showStatus(status)
+    if (typeof response.data === 'string') {
+      response.data = { msg }
+    } else {
+      response.data.msg = msg
     }
-    return response.data
+  }
+  return response.data
 }, (error) => {
-    error.data = {}
-    error.data.msg = '请求超时或服务器异常'
-    return Promise.reject(error)
+  error.data = {}
+  error.data.msg = '请求超时或服务器异常'
+  return Promise.reject(error)
 })
 
 export default service
