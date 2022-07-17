@@ -49,24 +49,24 @@ const getNewEssence = async () => {
     let data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
       return item.add_digest_time > timeStamp
     })
-    newData.unshift(...data)
+    newData.push(...data)
     // 过滤后依然是50条，有精华消息不止50条的可能
     while (!res.data.is_end && data.length === 50) {
       res = await api.getEssence(qNumber, ++pageNum)
       data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
         return item.add_digest_time > timeStamp
       })
-      newData.unshift(...data)
+      newData.push(...data)
     }
   }
-
   if (newData.length !== 0) {
+    newData.reverse()
     // 更新时间戳
-    timeStamp = newData[0].add_digest_time
+    timeStamp = newData[newData.length - 1].add_digest_time
     // 存入数据库
-    Essence.create(newData)
+    Essence.insertMany(newData)
     // 存入本地数组
-    essenceData = [...newData, ...essenceData]
+    essenceData = [...essenceData, ...newData]
     console.log(`有${newData.length}条新的精华消息！`)
   }
 }
@@ -84,10 +84,11 @@ client.on('system.online', async function () {
   if (essenceData.length === 0) {
     console.log('数据库无数据，进行请求')
     essenceData = await getAllEssence()
-    Essence.create(essenceData)
+    essenceData.reverse()
+    Essence.insertMany(essenceData)
   }
 
-  timeStamp = essenceData[0].add_digest_time
+  timeStamp = essenceData[essenceData.length - 1].add_digest_time
 
   console.log(`一共有${essenceData.length}条精华消息！`)
   setInterval(getNewEssence, 10000)
