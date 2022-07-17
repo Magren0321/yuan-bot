@@ -46,6 +46,6 @@ const renderRanking = (rank: number) => {
     case 3:
       return '🥉'
     default:
-      return `${rank}.`
+      return ` ${rank}.`
   }
 }

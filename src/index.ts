@@ -3,6 +3,7 @@ import api from './request/api'
 import { GroupResponse } from './types/responses'
 import { startDB } from './db'
 import { Essence } from './db/schemas/essence'
+import command from './command'
 
 startDB()
 
@@ -96,6 +97,10 @@ client.on('system.online', async function () {
 
 // 监听信息
 client.on('message', async e => {
-  console.log(e)
-  // e.reply('test', true)
+  if (e.message_type === 'group' && e.group_id === qNumber) {
+    if (command[e.raw_message]) {
+      const text = await command[e.raw_message]()
+      e.reply(text, true)
+    }
+  }
 })
