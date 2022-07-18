@@ -1,7 +1,7 @@
 {
   "name": "yuan-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "渊家糟粕机器人",
   "main": "index.js",
   "scripts": {
     "dev": "tsx src/index.ts",
