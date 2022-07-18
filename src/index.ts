@@ -42,33 +42,37 @@ const getAllEssence = async (): Promise<GroupResponse.EssenceDetail[]> => {
 
 // 获取新的精华
 const getNewEssence = async () => {
-  const newData:GroupResponse.EssenceDetail[] = []
-  let pageNum = 0
-  let res = await api.getEssence(qNumber, pageNum)
+  try {
+    const newData:GroupResponse.EssenceDetail[] = []
+    let pageNum = 0
+    let res = await api.getEssence(qNumber, pageNum)
 
-  if (res.data.msg_list) {
-    let data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
-      return item.add_digest_time > timeStamp
-    })
-    newData.push(...data)
-    // 过滤后依然是50条，有精华消息不止50条的可能
-    while (!res.data.is_end && data.length === 50) {
-      res = await api.getEssence(qNumber, ++pageNum)
-      data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
+    if (res.data.msg_list) {
+      let data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
         return item.add_digest_time > timeStamp
       })
       newData.push(...data)
+      // 过滤后依然是50条，有精华消息不止50条的可能
+      while (!res.data.is_end && data.length === 50) {
+        res = await api.getEssence(qNumber, ++pageNum)
+        data = res.data.msg_list.filter((item: GroupResponse.EssenceDetail) => {
+          return item.add_digest_time > timeStamp
+        })
+        newData.push(...data)
+      }
     }
-  }
-  if (newData.length !== 0) {
-    newData.reverse()
-    // 更新时间戳
-    timeStamp = newData[newData.length - 1].add_digest_time
-    // 存入数据库
-    Essence.insertMany(newData)
-    // 存入本地数组
-    essenceData = [...essenceData, ...newData]
-    console.log(`有${newData.length}条新的精华消息！`)
+    if (newData.length !== 0) {
+      newData.reverse()
+      // 更新时间戳
+      timeStamp = newData[newData.length - 1].add_digest_time
+      // 存入数据库
+      Essence.insertMany(newData)
+      // 存入本地数组
+      essenceData = [...essenceData, ...newData]
+      console.log(`有${newData.length}条新的精华消息！`)
+    }
+  } catch (e: any) {
+    console.log(e.data.msg)
   }
 }
 
@@ -92,7 +96,7 @@ client.on('system.online', async function () {
   timeStamp = essenceData[essenceData.length - 1].add_digest_time
 
   console.log(`一共有${essenceData.length}条精华消息！`)
-  setInterval(getNewEssence, 10000)
+  setInterval(getNewEssence, 30000)
 })
 
 // 监听信息
