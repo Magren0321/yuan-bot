@@ -9,10 +9,10 @@ export const rank = async (isMonth = false): Promise<string> => {
   } else {
     data = await Essence.find()
   }
-  const rankMap = new Map()
+  const rankMap = new Map<string, number>()
   for (const item of data) {
     if (rankMap.has(item.sender_nick)) {
-      let value = rankMap.get(item.sender_nick)
+      let value: number = rankMap.get(item.sender_nick)!
       rankMap.set(item.sender_nick, ++value)
     } else {
       rankMap.set(item.sender_nick, 1)
