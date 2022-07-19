@@ -1,13 +1,14 @@
-import { Essence } from '../db/schemas/essence'
 import { GroupResponse } from '../types/responses'
 
-export const rank = async (isMonth = false): Promise<string> => {
+export const rank = async (isMonth = false, essenceData:GroupResponse.EssenceDetail[]): Promise<string> => {
   let data: GroupResponse.EssenceDetail[] = []
   if (isMonth) {
     const time = Math.round(new Date().getTime() / 1000) - 2592000
-    data = await Essence.find({ sender_time: { $gte: time } })
+    data = essenceData.filter((item: GroupResponse.EssenceDetail) => {
+      return item.add_digest_time > time
+    })
   } else {
-    data = await Essence.find()
+    data = essenceData
   }
   const rankMap = new Map<string, number>()
   for (const item of data) {

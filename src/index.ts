@@ -1,8 +1,8 @@
 import { createClient } from 'oicq'
-import api from './request/api'
 import { GroupResponse } from './types/responses'
 import { startDB } from './db'
 import { Essence } from './db/schemas/essence'
+import api from './request/api'
 import command from './command'
 
 startDB()
@@ -103,7 +103,7 @@ client.on('system.online', async function () {
 client.on('message', async e => {
   if (e.message_type === 'group' && e.group_id === qNumber) {
     if (command[e.raw_message]) {
-      const text = await command[e.raw_message]()
+      const text = await command[e.raw_message](essenceData)
       e.reply(text, true)
     }
   }
