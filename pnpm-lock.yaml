@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/node': ^18.0.6
   '@typescript-eslint/eslint-plugin': ^5.30.6
   '@typescript-eslint/parser': ^5.30.6
   axios: ^0.27.2
@@ -16,6 +17,7 @@ specifiers:
   typescript: ^4.7.4
 
 dependencies:
+  '@types/node': registry.npmmirror.com/@types/node/18.0.6
   axios: registry.npmmirror.com/axios/0.27.2
   mongoose: registry.npmmirror.com/mongoose/6.4.3
   oicq: registry.npmmirror.com/oicq/2.3.1
@@ -135,10 +137,10 @@ packages:
     version: 0.0.29
     dev: true
 
-  registry.npmmirror.com/@types/node/18.0.3:
-    resolution: {integrity: sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.0.3.tgz}
+  registry.npmmirror.com/@types/node/18.0.6:
+    resolution: {integrity: sha512-/xUq6H2aQm261exT6iZTMifUySEt4GR5KX8eYyY+C4MSNPqSh9oNIP7tz2GLKTlFaiBbgZNxffoR3CVRG+cljw==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-18.0.6.tgz}
     name: '@types/node'
-    version: 18.0.3
+    version: 18.0.6
     dev: false
 
   registry.npmmirror.com/@types/webidl-conversions/6.1.1:
@@ -152,7 +154,7 @@ packages:
     name: '@types/whatwg-url'
     version: 8.2.2
     dependencies:
-      '@types/node': registry.npmmirror.com/@types/node/18.0.3
+      '@types/node': registry.npmmirror.com/@types/node/18.0.6
       '@types/webidl-conversions': registry.npmmirror.com/@types/webidl-conversions/6.1.1
     dev: false
 

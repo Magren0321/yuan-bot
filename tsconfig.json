@@ -1,21 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "module": "ESNext",
-    "allowJs": true,
-    "declaration": true,
-    "removeComments": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "outDir": "./dist",
+    "target": "es2019",
+    "module": "esnext",
+    "lib": ["es2019"],
     "strict": true,
-    "noUnusedLocals": true,
-    "moduleResolution": "Node",
-    "baseUrl": ".",
-    "skipLibCheck": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
-  "exclude": ["dist", "node_modules", "**/*.spec.ts"]
+  "include": ["src"],
 }
