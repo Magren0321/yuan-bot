@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "tsup",
+    "build": "pnpm run build:lib && pnpm run build:types",
+    "build:lib": "tsup",
+    "build:types": "tsc --emitDeclarationOnly --declaration",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "npm run lint -- --fix"
