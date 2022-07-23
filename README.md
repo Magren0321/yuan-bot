@@ -4,7 +4,7 @@
 
 目前只针对Q群的精华数据，在此之后会陆续丰富其他功能
 
-![./image/image.jpg]('截图示例')
+![截图示例](image/image.jpg)
 
 ## 启动
 在index.ts中进行配置
