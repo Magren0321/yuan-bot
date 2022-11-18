@@ -4,12 +4,14 @@ import { startDB } from './db'
 import { Essence } from './db/schemas/essence'
 import api from './request/api'
 import command from './command'
+import config from '../config'
 
 startDB()
 
-const account = 0 // Q号
-const password = '' // 密码
-const qNumber = 0 // 群号
+const account = config.account // Q号
+const password = config.password // 密码
+const qNumber = config.qNumber // 群号
+
 let timeStamp = 0 // 最新更新的时间戳
 let essenceData:GroupResponse.EssenceDetail[] = [] // 所有精华数据
 
@@ -103,7 +105,7 @@ client.on('system.online', async function () {
 client.on('message', async e => {
   if (e.message_type === 'group' && e.group_id === qNumber) {
     if (command[e.raw_message]) {
-      const text = await command[e.raw_message](essenceData)
+      const text = await command[e.raw_message](e, essenceData)
       e.reply(text, true)
     }
   }
