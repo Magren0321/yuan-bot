@@ -7,7 +7,7 @@
 ![截图示例](image/image.jpg)
 
 ## 启动
-在index.ts中进行配置
+在项目根目录添加config.ts并进行账号（account），密码（password）以及群号（qNumber）的配置。
 
 > pnpm install
 
