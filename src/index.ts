@@ -2,11 +2,14 @@ import { createClient } from 'oicq'
 import { GroupResponse } from './types/responses'
 import { startDB } from './db'
 import { Essence } from './db/schemas/essence'
+import { Member } from './db/schemas/member'
 import api from './request/api'
 import command from './command'
 import config from '../config'
+import startServer from './api'
 
 startDB()
+startServer()
 
 const account = config.account // Q号
 const password = config.password // 密码
@@ -78,6 +81,23 @@ const getNewEssence = async () => {
   }
 }
 
+// 获取群成员资料
+const getMemberInfo = async () => {
+  const group = client.pickGroup(qNumber)
+  const groupMember = await group.getMemberMap()
+  console.log('获取群成员~~~~~')
+
+  Member.remove()
+
+  groupMember.forEach((val, key) => {
+    const avatar = client.pickUser(key).getAvatarUrl()
+    Member.insertMany([{
+      ...val,
+      avatar
+    }])
+  })
+}
+
 login(password)
 // 登录成功
 client.on('system.online', async function () {
@@ -98,6 +118,10 @@ client.on('system.online', async function () {
   timeStamp = essenceData[essenceData.length - 1].add_digest_time
 
   console.log(`一共有${essenceData.length}条精华消息！`)
+
+  getMemberInfo()
+
+  setInterval(getMemberInfo, 86400000)
   setInterval(getNewEssence, 30000)
 })
 
