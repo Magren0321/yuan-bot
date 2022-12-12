@@ -1,5 +1,6 @@
 import { rank } from './rank'
 import { bot } from './bot'
+import { matching } from './matching'
 import { GroupResponse } from '../types/responses'
 import { DiscussMessageEvent, GroupMessageEvent, PrivateMessageEvent } from 'oicq'
 
@@ -16,6 +17,9 @@ const command: ICommand = {
   },
   '!bot': function (e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, essenceData:GroupResponse.EssenceDetail[]):Promise<string> {
     return bot(e)
+  },
+  '!matching': function (e: PrivateMessageEvent | GroupMessageEvent | DiscussMessageEvent, essenceData:GroupResponse.EssenceDetail[]):Promise<string> {
+    return matching(e)
   }
 }
 

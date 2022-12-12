@@ -125,12 +125,17 @@ client.on('system.online', async function () {
   setInterval(getNewEssence, 30000)
 })
 
+const commandList = ['!rank', '!rank-month', '!bot', '!matching']
+
 // 监听信息
 client.on('message', async e => {
   if (e.message_type === 'group' && e.group_id === qNumber) {
-    if (command[e.raw_message]) {
-      const text = await command[e.raw_message](e, essenceData)
-      e.reply(text, true)
+    const msg = e.raw_message.split(':')[0]
+    if (commandList.indexOf(msg) !== -1) {
+      if (command[msg]) {
+        const text = await command[msg](e, essenceData)
+        e.reply(text, true)
+      }
     }
   }
 })
