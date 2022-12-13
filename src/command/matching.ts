@@ -21,30 +21,26 @@ export const matching = async (e: PrivateMessageEvent | GroupMessageEvent | Disc
 }
 
 const startMatch = (num: number): string => {
-  const myMap = new Map()
-  let len = num
-  if (num % 2 !== 0) {
-    len -= 1
+  const member = Array.from(new Array(num + 1).keys()).slice(1)
+  let len = -1
+  if (num % 2 !== 0) { // 随机挑一个倒霉蛋
+    const idx = Math.floor(Math.random() * member.length)
+    len = member[idx]
+    member.splice(idx, 1)
   }
-  const isSelect: number[] = []
-  for (let i = 1; i <= len / 2; i++) {
-    let val = Math.ceil(Math.random() * (len - len / 2) + len / 2)
-    while (isSelect.indexOf(val) !== -1) {
-      val = Math.ceil(Math.random() * (len - len / 2) + len / 2)
-    }
-    myMap.set(i, val)
-    isSelect.push(val)
-  }
+  // 数组乱序
+  member.sort(() => { return Math.random() > 0.5 ? -1 : 1 })
 
-  const arr = Array.from(myMap)
-    .map((item, index, arr) => {
-      const text = `🧑🏻‍🤝‍🧑🏻 ${item[0]}-${item[1]}`
-      return text
-    })
+  const arr: String[] = []
+  // 进行匹配
+  for (let i = 0; i <= member.length - 2; i += 2) {
+    const text = `🧑🏻‍🤝‍🧑🏻 ${member[i]}-${member[i + 1]}`
+    arr.push(text)
+  }
 
   arr.unshift('Matching~💕')
-  if (len === num - 1) {
-    arr.push(`有一个可怜的倒霉蛋：${num}`)
+  if (len !== -1) {
+    arr.push(`有一个可怜的倒霉蛋：${len}`)
   }
 
   return arr.join('\n')
