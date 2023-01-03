@@ -87,7 +87,7 @@ const getMemberInfo = async () => {
   const groupMember = await group.getMemberMap()
   console.log('获取群成员~~~~~')
 
-  Member.remove()
+  await Member.deleteMany()
 
   groupMember.forEach((val, key) => {
     const avatar = client.pickUser(key).getAvatarUrl()
